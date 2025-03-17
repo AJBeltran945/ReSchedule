@@ -2,19 +2,15 @@
 
 ReSchedule es una herramienta web para organizar y gestionar horarios de manera automática. Diseñada especialmente para estudiantes, permite configurar tareas con diferentes niveles de prioridad sin la necesidad de hacerlo manualmente.
 
-## ¿Por qué ReSchedule?
-
 La idea surgió al ver a familiares y amigos estudiantes organizando sus horarios manualmente con notas adhesivas o agendas. Con ReSchedule, este proceso se automatiza, ahorrando tiempo y esfuerzo.
 
-## Características principales
+## Objetivos
 
 - Organiza tu horario automáticamente
 - Personaliza tus tareas
 - Notificaciones vía email
 - Inicio de sesión
 - Soporte para múltiples idiomas
-
-## Tipos de tareas
 
 ReSchedule permite la creación y gestión de diferentes tipos de tareas:
 
