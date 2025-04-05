@@ -90,7 +90,7 @@ El siguiente diagrama UML representa la estructura y las relaciones dentro del p
   - **FixedTimeTask** y **FlexibleTask** **heredan** de la clase **Task**, ya que ambas son tipos específicos de tarea pero comparten atributos y métodos comunes.
 
   - **FixedTimeTask**: Una tarea que ocurre a una **hora específica**.
-  - **FlexibleTask**: Una tarea que se puede completar dentro de una **ventana de tiempo**.
+  - **FlexibleTask**: Una tarea que se puede completar dentro de una **ventana de tiempo**, es decir, decides cuanto tiempo quieres dedicar en la tarea.
   
   - **LinkedTask**: Una tarea que está vinculada a otra tarea y depende de su estado.
 

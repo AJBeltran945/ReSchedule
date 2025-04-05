@@ -1,8 +1,5 @@
 vendor/
 composer.lock
-phpunit.xml
 node_modules/
 .idea
 .vscode
-.phpunit.result.cache
-reports/
