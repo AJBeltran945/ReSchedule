@@ -24,7 +24,7 @@ ReSchedule permite la creación y gestión de diferentes tipos de tareas:
 -   **Tailwind CSS**: Diseño rápido y eficiente sin necesidad de escribir mucho CSS.
 -   **PostgreSQL**: Base de datos potente, ideal para consultas avanzadas y estructuras de datos complejas.
 -   **Laravel Livewire**: Interactividad en tiempo real sin necesidad de escribir mucho JavaScript.
--   **Vue.js**: Para componentes dinámicos y reactividad avanzada cuando sea necesario.
+-   **blade**: Para componentes dinámicos y reactividad avanzada cuando sea necesario.
 -   **Laravel Queue**: Procesamiento en segundo plano para emails y tareas automatizadas.
 -   **Cron Jobs**: Automatización de la organización de tareas y recordatorios.
 
@@ -78,6 +78,35 @@ A continuación, se presentan las tablas que componen la base de datos del proye
 | color      | string      | Código de color para mostrarlo    |
 | importance | int         | Número para ordenar prioridades   |
 
+### **Group Task - User (Pivot Table)**
+
+| Attribute     | Type        | Description                               |
+| ------------- | ----------- | ----------------------------------------- |
+| group_task_id | bigint (FK) | ID of the group task (references `tasks`) |
+| user_id       | bigint (FK) | ID of the user participating in the task  |
+
+### **Comments**
+
+| Attribute     | Type        | Description                               |
+| ------------- | ----------- | ----------------------------------------- |
+| id            | bigint (PK) | Unique ID of the comment                  |
+| group_task_id | bigint (FK) | ID of the group task (references `tasks`) |
+| user_id       | bigint (FK) | Author of the comment                     |
+| content       | text        | Content of the comment                    |
+| created_at    | timestamp   | When it was created                       |
+| updated_at    | timestamp   | When it was last updated                  |
+
+### **Task Histories**
+
+| Attribute    | Type        | Description                             |
+| ------------ | ----------- | --------------------------------------- |
+| id           | bigint (PK) | Unique ID of the task history entry     |
+| user_id      | bigint (FK) | ID of the user who completed the task   |
+| task_id      | bigint (FK) | ID of the completed task                |
+| completed_at | timestamp   | Timestamp when the task was marked done |
+| created_at   | timestamp   | Record creation timestamp               |
+| updated_at   | timestamp   | Record last update timestamp            |
+
 ### **Notificaciones**
 
 | Atributo | Tipo        | Descripción                 |
@@ -130,42 +159,44 @@ El siguiente diagrama UML representa la estructura y las relaciones dentro del p
 
     -   Realiza el seguimiento de los trabajos con estados como **Pending** (Pendiente), **Processing** (En proceso) y **Done** (Hecho).
 
--   **DragAndDropService**  
+-   **DragAndDropService**
 
     -   Servicio encargado de permitir que el usuario reorganice sus tareas visualmente arrastrándolas en el calendario.  
         Utiliza **FullCalendar** para la interfaz y **Livewire** para guardar los cambios automáticamente.
 
--   **TaskHistory**  
+-   **TaskHistory**
+
     -   Clase que almacena el historial de tareas completadas por cada usuario.  
         Sirve como base para generar estadísticas y evaluar la productividad.
 
--   **ProductivityStats**  
+-   **ProductivityStats**
+
     -   Clase dedicada a procesar datos del historial de tareas para generar estadísticas semanales o mensuales.  
         También permite crear rankings de productividad, como "semana más productiva".
 
--   **GroupTask (hereda de Task)**  
+-   **GroupTask (hereda de Task)**
+
     -   Representa una tarea colaborativa en la que participan varios usuarios.  
         Incluye relaciones con los participantes, comentarios y notificaciones asociadas.
 
--   **Comment**  
+-   **Comment**
     -   Se utiliza para añadir comentarios dentro de una `GroupTask`.  
         Permite la comunicación y coordinación entre los miembros del grupo.
 
 ### **Relaciones entre Clases**
 
-- Un **User** puede tener múltiples **Tasks**, un **Schedule**, múltiples **Notifications** y múltiples registros en **TaskHistory**.
-- Una **Task** puede generar una **Notification**.
-- Una **Task** puede estar **vinculada** a otra **Task** (clase **LinkedTask**).
-- **FixedTimeTask**, **FlexibleTask** y **GroupTask** son especializaciones de la clase **Task**.
-- El **JobQueue** procesa tareas en segundo plano, como el envío de **Notifications** y la automatización del **Schedule**.
-- Un **Schedule** genera y organiza múltiples **Tasks** de un **User**.
-- Una **GroupTask** puede estar asociada a múltiples **Users** (relación N:N).
-- Una **GroupTask** puede tener múltiples **Comments**.
-- Un **Comment** pertenece a una única **GroupTask**.
-- Un **User** puede completar múltiples **Tasks**, que se registran en **TaskHistory**.
-- **ProductivityStats** utiliza los datos de **TaskHistory** para generar estadísticas y rankings.
-- **DragAndDropService** gestiona el movimiento visual de **Tasks** dentro del calendario.
-
+-   Un **User** puede tener múltiples **Tasks**, un **Schedule**, múltiples **Notifications** y múltiples registros en **TaskHistory**.
+-   Una **Task** puede generar una **Notification**.
+-   Una **Task** puede estar **vinculada** a otra **Task** (clase **LinkedTask**).
+-   **FixedTimeTask**, **FlexibleTask** y **GroupTask** son especializaciones de la clase **Task**.
+-   El **JobQueue** procesa tareas en segundo plano, como el envío de **Notifications** y la automatización del **Schedule**.
+-   Un **Schedule** genera y organiza múltiples **Tasks** de un **User**.
+-   Una **GroupTask** puede estar asociada a múltiples **Users** (relación N:N).
+-   Una **GroupTask** puede tener múltiples **Comments**.
+-   Un **Comment** pertenece a una única **GroupTask**.
+-   Un **User** puede completar múltiples **Tasks**, que se registran en **TaskHistory**.
+-   **ProductivityStats** utiliza los datos de **TaskHistory** para generar estadísticas y rankings.
+-   **DragAndDropService** gestiona el movimiento visual de **Tasks** dentro del calendario.
 
 ## Ver el diagrama UML
 
