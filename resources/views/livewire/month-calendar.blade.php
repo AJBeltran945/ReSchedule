@@ -17,9 +17,18 @@
 
     <div class="grid grid-cols-7 gap-2 text-center">
         @foreach($calendar as $day)
-        <div class="{{ $day->month != $month ? 'text-gray-400' : '' }}">
-            {{ $day->day }}
-        </div>
+            @php
+                $isToday = $day->isToday(); // assuming $day is a Carbon instance
+                $isCurrentMonth = $day->month === $month;
+            @endphp
+            <div class="border rounded-lg h-24 p-2 text-left relative {{ $isCurrentMonth ? '' : 'text-gray-400' }} {{ $isToday ? 'bg-blue-100 border-blue-500 ring-2 ring-blue-400' : 'bg-white' }}">
+                <div class="font-semibold">{{ $day->day }}</div>
+                <!-- You can add tasks here in future -->
+                <div class="text-sm mt-2 text-gray-600">
+                    <!-- Example task placeholder -->
+                    <p>Task 1</p>
+                </div>
+            </div>
         @endforeach
     </div>
 </div>

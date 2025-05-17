@@ -9,6 +9,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home/month', function () {
         return view('frontend.page.month');
     })->name('home.month');
+    Route::get('/home/week', function () {
+        return view('frontend.page.week');
+    })->name('home.week');
 
     // Add more protected routes here
 

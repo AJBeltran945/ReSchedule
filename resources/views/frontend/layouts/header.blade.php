@@ -18,6 +18,17 @@
                 </div>
             </div>
 
+            <!-- Navigation Links -->
+            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
+                <x-nav-link :href="route('home.month')" :active="request()->routeIs('home.month')">
+                    {{ __('Month View') }}
+                </x-nav-link>
+
+                <x-nav-link :href="route('home.week')" :active="request()->routeIs('home.week')">
+                    {{ __('Week View') }}
+                </x-nav-link>
+            </div>
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
