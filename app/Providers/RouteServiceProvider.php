@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class RouteServiceProvider extends ServiceProvider
@@ -18,7 +19,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
+    public const HOME = '/home/month';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -39,8 +40,16 @@ class RouteServiceProvider extends ServiceProvider
         ])
             ->prefix(LaravelLocalization::setLocale())
             ->group(function () {
+
+                Livewire::setUpdateRoute(function ($handle) {
+                    return Route::post('/livewire/update', $handle);
+                });
+
+                Route::get('/', function () {
+                    return view('frontend.welcome');
+                });
+
                 require base_path('routes/web.php');
             });
-
     }
 }

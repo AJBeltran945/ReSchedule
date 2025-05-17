@@ -27,6 +27,6 @@ class PreferencesController extends Controller
 
         Auth::user()->preference()->create($request->all());
 
-        return redirect()->route('frontend.dashboard');
+        return redirect()->route('home.month');
     }
 }
