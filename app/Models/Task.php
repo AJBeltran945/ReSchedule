@@ -14,7 +14,6 @@ class Task extends Model
         'title',
         'description',
         'type_task_id',
-        'priority_id',
         'start_date',
         'end_date',
         'related_task_id',
@@ -29,11 +28,6 @@ class Task extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(TaskType::class, 'type_task_id');
-    }
-
-    public function priority(): BelongsTo
-    {
-        return $this->belongsTo(Priority::class);
     }
 
     public function relatedTask(): BelongsTo

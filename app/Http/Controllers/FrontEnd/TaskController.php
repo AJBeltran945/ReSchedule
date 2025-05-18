@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    public function index()
+    {
+        $tasks = Task::with(['typeTask', 'priority'])->get();
+        return view('frontend.tasks.index', compact('tasks'));
+    }
+
     public function create()
     {
         return view('frontend.tasks.create', [

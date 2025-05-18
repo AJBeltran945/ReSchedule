@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class MonthCalendar extends Component
@@ -47,17 +49,25 @@ class MonthCalendar extends Component
     public function render()
     {
         $date = Carbon::create($this->year, $this->month, 1);
-        $startDayOfWeek = $date->dayOfWeekIso; // Monday = 1
+        $startDayOfWeek = $date->dayOfWeekIso;
         $calendar = [];
 
         $current = $date->copy()->subDays($startDayOfWeek - 1);
+        $userId = Auth::id();
 
         for ($i = 0; $i < 42; $i++) {
+            $tasks = Task::whereDate('start_date', $current->toDateString())
+                ->where('user_id', $userId)
+                ->with(['type'])
+                ->get();
+
             $calendar[] = [
                 'day' => $current->copy(),
                 'isToday' => $current->isToday(),
                 'isCurrentMonth' => $current->month === $this->month,
+                'tasks' => $tasks,
             ];
+
             $current->addDay();
         }
 

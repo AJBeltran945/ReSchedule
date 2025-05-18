@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->foreignId('type_task_id')->constrained('task_types')->onDelete('cascade');
-            $table->foreignId('priority_id')->constrained()->onDelete('cascade');
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->foreignId('related_task_id')->nullable()->constrained('tasks')->onDelete('set null');
