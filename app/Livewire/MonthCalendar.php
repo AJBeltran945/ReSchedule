@@ -9,6 +9,19 @@ class MonthCalendar extends Component
 {
     public $month;
     public $year;
+    public $selectedDay;
+    public $showModal = false;
+
+    public function showDayModal($date)
+    {
+        $this->selectedDay = Carbon::parse($date);
+        $this->showModal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+    }
 
     public function mount()
     {
@@ -34,21 +47,24 @@ class MonthCalendar extends Component
     public function render()
     {
         $date = Carbon::create($this->year, $this->month, 1);
-        $daysInMonth = $date->daysInMonth;
-        $startDayOfWeek = $date->dayOfWeekIso; // 1 (Mon) to 7 (Sun)
+        $startDayOfWeek = $date->dayOfWeekIso; // Monday = 1
         $calendar = [];
 
         $current = $date->copy()->subDays($startDayOfWeek - 1);
 
         for ($i = 0; $i < 42; $i++) {
-            $calendar[] = $current->copy();
+            $calendar[] = [
+                'day' => $current->copy(),
+                'isToday' => $current->isToday(),
+                'isCurrentMonth' => $current->month === $this->month,
+            ];
             $current->addDay();
         }
 
         return view('livewire.month-calendar', [
             'calendar' => $calendar,
-            'daysInMonth' => $daysInMonth,
             'currentMonthName' => $date->format('F'),
+            'year' => $this->year,
         ]);
     }
 }

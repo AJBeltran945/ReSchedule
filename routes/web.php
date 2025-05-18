@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\PreferencesController;
+use App\Http\Controllers\FrontEnd\TaskController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -12,8 +13,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home/week', function () {
         return view('frontend.page.week');
     })->name('home.week');
-
-    // Add more protected routes here
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

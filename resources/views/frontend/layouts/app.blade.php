@@ -13,23 +13,19 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/js/app.js'])
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <livewire:styles />
 </head>
 
-<body>
+<body class="min-h-screen flex flex-col">
     @include('frontend.layouts.header')
 
-    <div class="bg-blue">
-
-
+    <!-- Page Wrapper -->
+    <div class="bg-blue flex-grow">
         <!-- Page Content -->
-        <main>
+        <main class="flex-grow min-h-full">
             @yield('content')
         </main>
-
-
     </div>
 
     @include('frontend.layouts.footer')
