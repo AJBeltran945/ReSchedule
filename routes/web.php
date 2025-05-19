@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\PreferencesController;
-use App\Http\Controllers\FrontEnd\TaskController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
 

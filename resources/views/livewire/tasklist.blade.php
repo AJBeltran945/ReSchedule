@@ -125,7 +125,16 @@
     <div class="border p-2 mb-2 rounded shadow-sm flex justify-between items-center">
         <div>
             <div class="font-semibold">{{ $task->title }}</div>
-            <div class="text-sm text-gray-600">{{ $task->type->name }}</div>
+            <div class="text-sm text-gray-600">
+                {{ $task->type->name }}
+            </div>
+        </div>
+        <div>
+            <div class="text-xs text-gray-500">
+                @if($task->start_date && $task->end_date)
+                {{ \Carbon\Carbon::parse($task->start_date)->format('H:i') }} → {{ \Carbon\Carbon::parse($task->end_date)->format('H:i') }}
+                @endif
+            </div>
         </div>
         <button
             wire:click="delete({{ $task->id }})"

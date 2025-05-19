@@ -47,7 +47,7 @@
                     @if (Route::has('login'))
                     <div class="flex items-center space-x-4">
                         @auth
-                        <a href="{{ url('/home') }}"
+                        <a href="{{ url('/home/month') }}"
                             class="font-semibold text-gray-300 hover:text-white">
                             Dashboard
                         </a>
