@@ -48,6 +48,7 @@ class WeekCalendar extends Component
         for ($i = 0; $i < 7; $i++) {
             $tasks = Task::whereDate('start_date', $current->toDateString())
                 ->where('user_id', $userId)
+                ->where('completed', false)
                 ->with(['type'])
                 ->get();
 
