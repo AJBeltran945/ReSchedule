@@ -21,6 +21,7 @@ return new class extends Migration
             $table->dateTime('end_date')->nullable();
             $table->foreignId('related_task_id')->nullable()->constrained('tasks')->onDelete('set null');
             $table->boolean('completed')->default(false);
+            $table->foreignId('priority_id')->nullable()->constrained('priorities')->onDelete('set null');
             $table->timestamps();
         });
     }

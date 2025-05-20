@@ -13,4 +13,9 @@ class Priority extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function taskTypes()
+    {
+        return $this->hasMany(TaskType::class);
+    }
 }

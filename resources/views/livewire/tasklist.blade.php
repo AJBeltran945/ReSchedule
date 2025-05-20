@@ -122,7 +122,7 @@
 
     {{-- Task list --}}
     @forelse($tasks as $task)
-    <div class="border p-2 mb-2 rounded shadow-sm flex justify-between items-center">
+    <div class="border p-2 mb-2 rounded shadow-sm flex justify-between items-center" style="background-color: {{ $task->priority->color }}">
         <div>
             <div class="font-semibold">{{ $task->title }}</div>
             <div class="text-sm text-gray-600">

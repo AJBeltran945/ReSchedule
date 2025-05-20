@@ -24,6 +24,7 @@ class Tasklist extends Component
     public $start_time = '';
     public $end_time = '';
     public $preferred_time_block = '';
+    public $priority_id = null;
 
     public function mount($date)
     {
@@ -42,6 +43,7 @@ class Tasklist extends Component
         $this->related_task_id = null;
         $this->start_time = '';
         $this->end_time = '';
+        $this->priority_id = null;
     }
 
     public function onAddDurationChange($checked)
@@ -116,6 +118,14 @@ class Tasklist extends Component
         $startDateTime = $this->start_time ? $this->date . ' ' . $this->start_time . ':00' : null;
         $endDateTime = $this->end_time ? $this->date . ' ' . $this->end_time . ':00' : null;
 
+        if ($this->type_task_id === '1') {
+            $this->priority_id = 1;
+        } elseif ($this->type_task_id === '2') {
+            $this->priority_id = 2;
+        } elseif ($this->type_task_id === '3') {
+            $this->priority_id = 3;
+        }
+
         Task::create([
             'user_id' => Auth::id(),
             'title' => $this->title,
@@ -125,6 +135,7 @@ class Tasklist extends Component
             'end_date' => $endDateTime,
             'related_task_id' => $this->related_task_id,
             'completed' => false,
+            'priority_id' => $this->priority_id,
         ]);
 
         $this->reset([
@@ -138,7 +149,8 @@ class Tasklist extends Component
             'related_task_id',
             'duration',
             'preferred_time_block',
-            'showForm'
+            'showForm',
+            'priority_id',
         ]);
     }
 
