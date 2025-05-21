@@ -9,8 +9,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home/month', function () {
         return view('frontend.page.month');
     })->name('home.month');
-
-    // Add more protected routes here
+    Route::get('/home/week', function () {
+        return view('frontend.page.week');
+    })->name('home.week');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

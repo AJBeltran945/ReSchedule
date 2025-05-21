@@ -2,13 +2,28 @@
 
 namespace App\Livewire;
 
+use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class MonthCalendar extends Component
 {
     public $month;
     public $year;
+    public $selectedDay;
+    public $showModal = false;
+
+    public function showDayModal($date)
+    {
+        $this->selectedDay = Carbon::parse($date);
+        $this->showModal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+    }
 
     public function mount()
     {
@@ -34,21 +49,33 @@ class MonthCalendar extends Component
     public function render()
     {
         $date = Carbon::create($this->year, $this->month, 1);
-        $daysInMonth = $date->daysInMonth;
-        $startDayOfWeek = $date->dayOfWeekIso; // 1 (Mon) to 7 (Sun)
+        $startDayOfWeek = $date->dayOfWeekIso;
         $calendar = [];
 
         $current = $date->copy()->subDays($startDayOfWeek - 1);
+        $userId = Auth::id();
 
         for ($i = 0; $i < 42; $i++) {
-            $calendar[] = $current->copy();
+            $tasks = Task::whereDate('start_date', $current->toDateString())
+                ->where('user_id', $userId)
+                ->where('completed', false)
+                ->with(['type'])
+                ->get();
+
+            $calendar[] = [
+                'day' => $current->copy(),
+                'isToday' => $current->isToday(),
+                'isCurrentMonth' => $current->month === $this->month,
+                'tasks' => $tasks,
+            ];
+
             $current->addDay();
         }
 
         return view('livewire.month-calendar', [
             'calendar' => $calendar,
-            'daysInMonth' => $daysInMonth,
             'currentMonthName' => $date->format('F'),
+            'year' => $this->year,
         ]);
     }
 }

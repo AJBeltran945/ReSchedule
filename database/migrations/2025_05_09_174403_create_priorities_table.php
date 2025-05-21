@@ -13,9 +13,9 @@ return new class extends Migration
     {
             Schema::create('priorities', function (Blueprint $table) {
                 $table->id();
-                $table->string('name'); // 'Alta', 'Media', etc.
-                $table->string('color'); // Hex code or Tailwind color class
-                $table->integer('importance'); // Para orden
+                $table->string('name');
+                $table->string('color');
+                $table->string('importance');
                 $table->timestamps();
             });
     }

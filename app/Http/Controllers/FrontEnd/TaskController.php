@@ -7,26 +7,26 @@ use App\Models\Task;
 use App\Models\TaskType;
 use App\Models\Priority;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::where('user_id', Auth::id())->latest()->get();
-        return view('tasks.index', compact('tasks'));
+        $tasks = Task::with(['typeTask', 'priority'])->get();
+        return view('frontend.tasks.index', compact('tasks'));
     }
 
     public function create()
     {
-        $types = TaskType::all();
-        $priorities = Priority::all();
-        return view('tasks.create', compact('types', 'priorities'));
+        return view('frontend.tasks.create', [
+            'taskTypes' => TaskType::all(),
+            'priorities' => Priority::all(),
+            'tasks' => Task::all(),
+        ]);
     }
-
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'type_task_id' => 'required|exists:task_types,id',
@@ -34,13 +34,15 @@ class TaskController extends Controller
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'related_task_id' => 'nullable|exists:tasks,id',
+            'completed' => 'nullable|boolean',
         ]);
 
-        $data['user_id'] = Auth::id();
-        $data['completed'] = false;
+        $validated['user_id'] = auth()->id(); // associate with current user
+        $validated['completed'] = $request->has('completed'); // checkbox value
 
-        Task::create($data);
-        return redirect()->route('tasks.index')->with('success', 'Task created.');
+        Task::create($validated);
+
+        return redirect()->route('frontend.tasks.create')->with('success', 'Task created successfully.');
     }
 
     public function edit(Task $task)

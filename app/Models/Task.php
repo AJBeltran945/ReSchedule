@@ -14,11 +14,11 @@ class Task extends Model
         'title',
         'description',
         'type_task_id',
-        'priority_id',
         'start_date',
         'end_date',
         'related_task_id',
-        'completed'
+        'completed',
+        'priority_id'
     ];
 
     public function user(): BelongsTo
@@ -29,11 +29,6 @@ class Task extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(TaskType::class, 'type_task_id');
-    }
-
-    public function priority(): BelongsTo
-    {
-        return $this->belongsTo(Priority::class);
     }
 
     public function relatedTask(): BelongsTo
@@ -51,13 +46,12 @@ class Task extends Model
         return $this->belongsToMany(User::class, 'group_task_user', 'group_task_id', 'user_id');
     }
 
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class, 'group_task_id');
-    }
-
     public function histories(): HasMany
     {
         return $this->hasMany(TaskHistory::class);
+    }
+    public function priority()
+    {
+        return $this->belongsTo(Priority::class);
     }
 }
