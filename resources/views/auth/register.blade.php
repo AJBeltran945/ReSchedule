@@ -21,9 +21,9 @@
             <x-input-label for="password" :value="__('Password')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+                type="password"
+                name="password"
+                required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -33,10 +33,22 @@
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+                type="password"
+                name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <!-- Language Selector -->
+        <div class="mt-4">
+            <x-input-label for="language" :value="__('Preferred Language')" />
+
+            <select id="language" name="language" required
+                class="mt-1 block w-full rounded-md shadow-sm border-gray-300 focus:ring-blue-500 focus:border-blue-500">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <!-- Add more languages as needed -->
+            </select>
         </div>
 
         <div class="flex items-center justify-end mt-4">
@@ -45,7 +57,7 @@
             </a>
 
             <x-primary-button class="ms-4">
-                {{ __('Register') }}
+                {{ __('Next') }}
             </x-primary-button>
         </div>
     </form>
