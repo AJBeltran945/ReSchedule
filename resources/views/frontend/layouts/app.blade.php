@@ -6,22 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'ReSchedule') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Scripts -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: '#280137',
+                        'midnight-dark': '#1c012a',
+                        royal: '#FADA5E'
+                    }
+                }
+            }
+        }
+    </script>
+
     <livewire:styles />
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col bg-midnight text-white font-sans antialiased">
     @include('frontend.layouts.header')
 
     <!-- Page Wrapper -->
-    <div class="bg-blue flex-grow">
+    <div class="flex-grow">
         <!-- Page Content -->
         <main class="flex-grow min-h-full">
             @yield('content')
