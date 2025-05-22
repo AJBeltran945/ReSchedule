@@ -29,6 +29,7 @@
     </script>
 
     <livewire:styles />
+    <script src="https://unpkg.com/alpinejs" defer></script>
 </head>
 
 <body class="min-h-screen flex flex-col bg-midnight text-white font-sans antialiased">

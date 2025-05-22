@@ -1,32 +1,30 @@
 <header x-data="{ open: false }" class="bg-midnight-dark border-b border-gray-700 text-white shadow">
-    <!-- Navigation Container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16 items-center">
+        <div class="flex justify-between items-center h-16">
 
-            <!-- Logo -->
-            <div class="flex items-center">
+            <!-- Left: Logo -->
+            <div class="flex items-center flex-shrink-0">
                 <a href="{{ route('welcome') }}" class="text-2xl font-bold hover:text-royal transition">
                     ReSchedule
                 </a>
             </div>
 
-            <!-- Navigation Links (Desktop) -->
-            <nav class="hidden sm:flex items-center space-x-6 text-sm font-medium">
-                <x-nav-link :href="route('home.month')" :active="request()->routeIs('home.month')" class="hover:text-royal">
-                    {{ __('Month View') }}
-                </x-nav-link>
-                <x-nav-link :href="route('home.week')" :active="request()->routeIs('home.week')" class="hover:text-royal">
-                    {{ __('Week View') }}
-                </x-nav-link>
-            </nav>
-
-            <!-- Notifications -->
-            <div class="hidden sm:flex items-center">
-                <livewire:notifications-menu />
+            <!-- Center: Navigation Links -->
+            <div class="hidden sm:flex justify-center flex-1">
+                <nav class="flex items-center space-x-6 text-sm font-medium">
+                    <x-nav-link :href="route('home.month')" :active="request()->routeIs('home.month')" class="hover:text-royal">
+                        {{ __('Month View') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('home.week')" :active="request()->routeIs('home.week')" class="hover:text-royal">
+                        {{ __('Week View') }}
+                    </x-nav-link>
+                </nav>
             </div>
 
-            <!-- User Dropdown -->
-            <div class="hidden sm:flex items-center">
+            <!-- Right: Notifications and Dropdown -->
+            <div class="hidden sm:flex items-center space-x-4">
+                <livewire:notifications-menu />
+
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-midnight hover:text-royal focus:outline-none transition">
@@ -54,7 +52,7 @@
                 </x-dropdown>
             </div>
 
-            <!-- Hamburger Menu (Mobile) -->
+            <!-- Mobile: Hamburger -->
             <div class="sm:hidden flex items-center">
                 <button @click="open = ! open" class="p-2 rounded-md text-white hover:text-royal hover:bg-gray-800 focus:outline-none transition">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
