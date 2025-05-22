@@ -42,7 +42,7 @@ class TaskAssigned extends Notification
             ->line("You have been assigned a new task: {$this->task->title}.")
             ->line("Start: " . optional($this->task->start_date)?->format('d M Y H:i'))
             ->line("End: " . optional($this->task->end_date)?->format('d M Y H:i'))
-            ->action('View Task', url("/tasks/{$this->task->id}"))
+            ->action('View Task', url("/en/home/month/"))
             ->line('Thank you for using ReSchedule!');
     }
 
@@ -54,11 +54,11 @@ class TaskAssigned extends Notification
     public function toDatabase($notifiable)
     {
         return [
-        'title' => 'New Task Assigned',
-        'message' => "You have a new task: {$this->task->title}",
-        'task_id' => $this->task->id,
-        'start_time' => optional($this->task->start_date)->format('d M Y H:i'),
-        'end_time' => optional($this->task->end_date)->format('d M Y H:i'),
-    ];
+            'title' => 'New Task Assigned',
+            'message' => "You have a new task: {$this->task->title}",
+            'task_id' => $this->task->id,
+            'start_time' => optional($this->task->start_date)->format('d M Y H:i'),
+            'end_time' => optional($this->task->end_date)->format('d M Y H:i'),
+        ];
     }
 }

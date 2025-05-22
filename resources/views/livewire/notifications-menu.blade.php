@@ -14,7 +14,7 @@
 
     {{-- Dropdown --}}
     @if($open)
-        <div class="absolute right-0 mt-2 w-80 bg-white border shadow-xl z-50 rounded p-3">
+        <div wire:click.away="$set('open', false)" class="absolute right-0 mt-2 w-80 bg-white border shadow-xl z-50 rounded p-3">
             <div class="flex justify-between items-center mb-2">
                 <h4 class="font-semibold">Notifications</h4>
                 <button wire:click="markAllAsRead" class="text-sm text-blue-600">Mark all as read</button>

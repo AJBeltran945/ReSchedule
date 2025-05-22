@@ -13,13 +13,13 @@ class NotificationsMenu extends Component
     public function markAsRead($id)
     {
         auth()->user()->notifications()->find($id)?->markAsRead();
-        $this->emit('notificationRead');
+        $this->dispatch('notificationRead');
     }
 
     public function markAllAsRead()
     {
         auth()->user()->unreadNotifications->markAsRead();
-        $this->emit('notificationRead');
+        $this->dispatch('notificationRead');
     }
 
     public function toggle()
