@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Task;
 use App\Models\TaskType;
 use App\Models\UserPreference;
+use App\Notifications\TaskAssigned;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -126,7 +127,7 @@ class Tasklist extends Component
             $this->priority_id = 3;
         }
 
-        Task::create([
+        $task = Task::create([
             'user_id' => Auth::id(),
             'title' => $this->title,
             'description' => $this->description,
@@ -137,6 +138,10 @@ class Tasklist extends Component
             'completed' => false,
             'priority_id' => $this->priority_id,
         ]);
+
+
+        auth()->user()->notify(new TaskAssigned($task));
+
 
         $this->reset([
             'title',
