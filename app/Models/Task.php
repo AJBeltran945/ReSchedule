@@ -36,11 +36,6 @@ class Task extends Model
         return $this->belongsTo(Task::class, 'related_task_id');
     }
 
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class);
-    }
-
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'group_task_user', 'group_task_id', 'user_id');
