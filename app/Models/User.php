@@ -19,11 +19,6 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class);
-    }
-
     public function taskHistories(): HasMany
     {
         return $this->hasMany(TaskHistory::class);
