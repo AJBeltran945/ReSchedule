@@ -47,7 +47,7 @@ class RouteServiceProvider extends ServiceProvider
 
                 Route::get('/', function () {
                     return view('frontend.welcome');
-                });
+                })->name('welcome');
 
                 require base_path('routes/web.php');
             });
