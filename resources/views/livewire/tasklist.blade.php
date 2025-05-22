@@ -1,43 +1,44 @@
-<div class="h-[650px] overflow-y-auto">
+<div class="h-[650px] overflow-y-auto p-4 text-white">
+
     {{-- Toggle Button --}}
-    <button wire:click="toggleForm" class="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+    <button wire:click="toggleForm" class="mb-4 px-4 py-2 bg-royal text-midnight font-semibold rounded hover:bg-yellow-400 transition">
         {{ $showForm ? 'Cancel' : 'New Task' }}
     </button>
 
     {{-- Dynamic Form --}}
     @if($showForm)
-    <div class="mb-6 space-y-3 bg-white p-4 rounded shadow">
+    <div class="mb-6 space-y-4 bg-midnight p-4 rounded shadow text-white">
+
         {{-- Title --}}
         <div>
-            <label class="block text-sm font-medium text-gray-700">Title</label>
-            <input type="text" wire:model="title" class="mt-1 block w-full border rounded p-2" />
-            @error('title') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+            <label class="block text-sm font-medium">Title</label>
+            <input type="text" wire:model="title" class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal" />
+            @error('title') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
         </div>
 
         {{-- Description --}}
         <div>
-            <label class="block text-sm font-medium text-gray-700">Description</label>
-            <textarea wire:model="description" class="mt-1 block w-full border rounded p-2"></textarea>
-            @error('description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+            <label class="block text-sm font-medium">Description</label>
+            <textarea wire:model="description" class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal"></textarea>
+            @error('description') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
         </div>
 
-
-        {{-- Task Type + Time of Day (inline) --}}
-        <div class="flex flex-col sm:flex-row sm:items-end sm:gap-4">
+        {{-- Task Type + Preferred Time --}}
+        <div class="flex flex-col sm:flex-row sm:gap-4">
             <div class="w-full sm:w-1/2">
-                <label class="block text-sm font-medium text-gray-700">Task Type</label>
-                <select wire:model="type_task_id" wire:change="onTypeChange" class="mt-1 block w-full border rounded p-2">
+                <label class="block text-sm font-medium">Task Type</label>
+                <select wire:model="type_task_id" wire:change="onTypeChange" class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal">
                     <option value="">-- Select Type --</option>
                     @foreach($types as $type)
                     <option value="{{ $type->id }}">{{ $type->name }}</option>
                     @endforeach
                 </select>
-                @error('type_task_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                @error('type_task_id') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
             </div>
 
             <div class="w-full sm:w-1/2">
-                <label class="block text-sm font-medium text-gray-700">Preferred Time of Day</label>
-                <select wire:model="preferred_time_block" class="mt-1 block w-full border rounded p-2">
+                <label class="block text-sm font-medium">Preferred Time of Day</label>
+                <select wire:model="preferred_time_block" class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal">
                     <option value="">-- Select Time Block --</option>
                     <option value="morning">Morning</option>
                     <option value="afternoon">Afternoon</option>
@@ -46,24 +47,19 @@
             </div>
         </div>
 
-        {{-- Manual Interval + Duration Checkboxes (inline) --}}
+        {{-- Checkboxes --}}
         @if((int) $type_task_id === 1 || (int) $type_task_id === 3)
         <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6">
             <label class="inline-flex items-center mt-2">
-                <input
-                    type="checkbox"
-                    wire:change="onManualIntervalChange($event.target.checked)"
-                    class="form-checkbox h-4 w-4 text-blue-600"
-                    @checked($addDuration) />
-                <span class="ml-2 text-sm text-gray-700">Add Time interval</span>
+                <input type="checkbox" wire:change="onManualIntervalChange($event.target.checked)"
+                    class="form-checkbox h-4 w-4 text-royal bg-gray-900 border-gray-600">
+                <span class="ml-2 text-sm">Add Time interval</span>
             </label>
 
             <label class="inline-flex items-center mt-2">
-                <input
-                    type="checkbox"
-                    wire:change="onAddDurationChange($event.target.checked)"
-                    class="form-checkbox h-4 w-4 text-blue-600" />
-                <span class="ml-2 text-sm text-gray-700">Add Duration</span>
+                <input type="checkbox" wire:change="onAddDurationChange($event.target.checked)"
+                    class="form-checkbox h-4 w-4 text-royal bg-gray-900 border-gray-600">
+                <span class="ml-2 text-sm">Add Duration</span>
             </label>
         </div>
         @endif
@@ -72,48 +68,48 @@
         @if((int) $type_task_id === 2 || ((int) $type_task_id === 1 && $manualInterval) || ((int) $type_task_id === 3 && $manualInterval))
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700">Start Time</label>
-                <input type="time" wire:model="start_time" class="mt-1 block w-full border rounded p-2" />
-                @error('start_time') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                <label class="block text-sm font-medium">Start Time</label>
+                <input type="time" wire:model="start_time" class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal" />
+                @error('start_time') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700">End Time</label>
-                <input type="time" wire:model="end_time" class="mt-1 block w-full border rounded p-2" />
-                @error('end_time') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                <label class="block text-sm font-medium">End Time</label>
+                <input type="time" wire:model="end_time" class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal" />
+                @error('end_time') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
             </div>
         </div>
         @endif
 
+        {{-- Duration --}}
         @if(((int) $type_task_id === 1 && $addDuration) || ((int) $type_task_id === 3 && $addDuration))
         <div>
-            <label class="block text-sm font-medium text-gray-700">Duration</label>
-            <input
-                type="text"
-                wire:model="duration"
-                placeholder="e.g. 2h 30min, 1h, 45min"
-                class="mt-1 block w-full border rounded p-2" />
-            @error('duration') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+            <label class="block text-sm font-medium">Duration</label>
+            <input type="text" wire:model="duration" placeholder="e.g. 2h 30min, 1h, 45min"
+                class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal" />
+            @error('duration') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
         </div>
         @endif
 
-        {{-- Related Task (Type 3 only) --}}
+        {{-- Related Task --}}
         @if((int) $type_task_id === 3)
         <div>
-            <label class="block text-sm font-medium text-gray-700">Related Task</label>
-            <select wire:model="related_task_id" class="mt-1 block w-full border rounded p-2">
+            <label class="block text-sm font-medium">Related Task</label>
+            <select wire:model="related_task_id"
+                class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal">
                 <option value="">-- Select Related Task --</option>
                 @foreach($userTasks as $task)
                 <option value="{{ $task->id }}">{{ $task->title }}</option>
                 @endforeach
             </select>
-            @error('related_task_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+            @error('related_task_id') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
         </div>
         @endif
 
-        {{-- Submit Button --}}
+        {{-- Submit --}}
         <form wire:submit.prevent="save">
-            <button type="submit" class="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+            <button type="submit"
+                class="mt-4 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
                 Save Task
             </button>
         </form>
@@ -122,29 +118,38 @@
 
     {{-- Task list --}}
     @forelse($tasks as $task)
-    <div class="border p-2 mb-2 rounded shadow-sm flex justify-between items-center" style="background-color: {{ $task->priority->color }}">
-        <div>
-            <div class="font-semibold">{{ $task->title }}</div>
-            <div class="text-sm text-gray-600">
+    <div class="p-4 mb-3 rounded-lg shadow-lg flex justify-between items-center text-sm"
+        style="background-color: {{ $task->priority->color }}">
+
+        <!-- Left: Task Title + Type -->
+        <div class="flex-1">
+            <div class="text-base font-extrabold text-white leading-tight">
+                {{ $task->title }}
+            </div>
+            <div class="text-xs text-white/90 font-medium tracking-wide">
                 {{ $task->type->name }}
             </div>
         </div>
-        <div>
-            <div class="text-xs text-gray-500">
-                @if($task->start_date && $task->end_date)
-                {{ \Carbon\Carbon::parse($task->start_date)->format('H:i') }} → {{ \Carbon\Carbon::parse($task->end_date)->format('H:i') }}
-                @endif
-            </div>
+
+        <!-- Center: Time Block -->
+        <div class="text-xs text-white/80 text-right mx-4 min-w-[80px]">
+            @if($task->start_date && $task->end_date)
+            {{ \Carbon\Carbon::parse($task->start_date)->format('H:i') }}
+            →
+            {{ \Carbon\Carbon::parse($task->end_date)->format('H:i') }}
+            @endif
         </div>
-        <button
-            wire:click="delete({{ $task->id }})"
-            class="text-red-600 hover:text-red-800 text-sm ml-4"
-            onclick="return confirm('Are you sure you want to delete this task?')">
-            Delete
+
+        <!-- Right: Delete Button -->
+        <button wire:click="delete({{ $task->id }})"
+            onclick="return confirm('Are you sure you want to delete this task?')"
+            class="ml-2 text-white hover:text-red-500 transition text-lg font-bold leading-none">
+            ✕
         </button>
     </div>
     @empty
-    <p class="text-sm text-gray-500">No tasks found for this day.</p>
+    <p class="text-sm text-white/60">No tasks found for this day.</p>
     @endforelse
+
 
 </div>
