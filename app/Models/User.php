@@ -28,4 +28,22 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserPreference::class);
     }
+
+    /**
+     * Scope a query to only subscribed users.
+     */
+    public function scopeSubscribed($query)
+    {
+        return $query->whereHas('preference', function ($q) {
+            $q->where('is_subscribed', true);
+        });
+    }
+
+    /**
+     * Optional helper attribute: $user->isSubscribed
+     */
+    public function getIsSubscribedAttribute(): bool
+    {
+        return $this->preference?->is_subscribed ?? false;
+    }
 }

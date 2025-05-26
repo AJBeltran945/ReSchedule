@@ -28,7 +28,15 @@ class TaskAssigned extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        // always store in database…
+        $channels = ['database'];
+
+        // …but only email if they’re subscribed
+        if ($notifiable->isSubscribed) {
+            $channels[] = 'mail';
+        }
+
+        return $channels;
     }
 
     /**

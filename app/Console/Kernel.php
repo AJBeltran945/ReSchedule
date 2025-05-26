@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Models\User;
 use App\Notifications\DailyTaskSummary;
 use App\Notifications\WeeklyTaskDigest;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,32 +17,38 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule)
     {
-        // Daily tasks at 7 AM
+        // 1) Daily summary at 7 AM for subscribed users:
         $schedule->call(function () {
-            $users = User::with(['tasks' => function ($query) {
-                $query->whereDate('start_date', today());
-            }])->get();
+            $today = Carbon::today()->toDateString();
 
-            foreach ($users as $user) {
-                if ($user->tasks->isNotEmpty()) {
+            User::subscribed()
+                ->with(['tasks' => function ($q) use ($today) {
+                    $q->whereDate('start_date', $today);
+                }])
+                ->get()
+                ->filter->tasks->isNotEmpty()
+                ->each(function (User $user) {
                     $user->notify(new DailyTaskSummary($user->tasks));
-                }
-            }
+                });
         })->dailyAt('07:00');
 
-        // Weekly digest every Monday at 7 AM
+        // 2) Weekly digest every Monday at 7 AM for subscribed users:
         $schedule->call(function () {
-            $users = User::with(['tasks' => function ($query) {
-                $query->whereBetween('start_date', [now(), now()->addDays(7)]);
-            }])->get();
+            $start = Carbon::now()->startOfDay();
+            $end   = Carbon::now()->addWeek()->endOfDay();
 
-            foreach ($users as $user) {
-                if ($user->tasks->isNotEmpty()) {
+            User::subscribed()
+                ->with(['tasks' => function ($q) use ($start, $end) {
+                    $q->whereBetween('start_date', [$start, $end]);
+                }])
+                ->get()
+                ->filter->tasks->isNotEmpty()
+                ->each(function (User $user) {
                     $user->notify(new WeeklyTaskDigest($user->tasks));
-                }
-            }
-        })->weeklyOn(1, '07:00');
+                });
+        })->weeklyOn(1, '07:00');  // 1 = Monday
     }
+
 
     /**
      * Register the commands for the application.
