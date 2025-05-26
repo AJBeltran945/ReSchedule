@@ -44,15 +44,12 @@
             <!-- Task List -->
             <div class="mt-2 text-xs flex flex-wrap gap-1 items-start overflow-hidden">
                 @foreach($dayData['tasks']->take(3) as $task)
-                <span class="
-                    px-2 py-0.5 rounded-full text-xs font-semibold leading-tight whitespace-nowrap
-                    {{ $task->completed
-                        ? 'bg-gray-700 text-gray-300 line-through'
-                        : 'bg-royal text-midnight'
-                    }}
-                ">
-                    {{ $task->title }}
-                </span>
+                    <span
+                        class="px-2 py-0.5 rounded-full text-xs font-semibold leading-tight whitespace-nowrap"
+                        style="background-color: {{ $task->priority->color }}; color: #fff; {{ $task->completed ? 'text-decoration: line-through; opacity: 0.7;' : '' }}"
+                    >
+                        {{ $task->title }}
+                    </span>
                 @endforeach
 
                 @if($dayData['tasks']->count() > 3)

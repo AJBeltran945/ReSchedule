@@ -12,8 +12,8 @@
         'breakfast_time' => 'Breakfast Time',
         'lunch_time' => 'Lunch Time',
         'dinner_time' => 'Dinner Time',
-        'study_time_start' => 'Study Start Time',
-        'study_time_end' => 'Study End Time',
+        'study_time_start' => 'Busy Start Time',
+        'study_time_end' => 'Busy End Time',
         ] as $name => $label)
         <div class="mt-4">
             <label class="block text-sm font-medium text-white">{{ $label }}</label>
