@@ -28,7 +28,15 @@ class TaskAssigned extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        // always store in database…
+        $channels = ['database'];
+
+        // …but only email if they’re subscribed
+        if ($notifiable->isSubscribed) {
+            $channels[] = 'mail';
+        }
+
+        return $channels;
     }
 
     /**
@@ -40,8 +48,6 @@ class TaskAssigned extends Notification
             ->subject('New Task Assigned: ' . $this->task->title)
             ->greeting('Hello ' . $notifiable->name . ',')
             ->line("You have been assigned a new task: {$this->task->title}.")
-            ->line("Start: " . optional($this->task->start_date)?->format('d M Y H:i'))
-            ->line("End: " . optional($this->task->end_date)?->format('d M Y H:i'))
             ->action('View Task', url("/en/home/month/"))
             ->line('Thank you for using ReSchedule!');
     }

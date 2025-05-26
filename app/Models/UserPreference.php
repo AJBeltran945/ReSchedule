@@ -18,6 +18,7 @@ class UserPreference extends Model
         'dinner_time',
         'study_time_start',
         'study_time_end',
+        'is_subscribed',
     ];
 
     protected $casts = [
@@ -28,6 +29,7 @@ class UserPreference extends Model
         'dinner_time' => 'datetime:H:i',
         'study_time_start' => 'datetime:H:i',
         'study_time_end' => 'datetime:H:i',
+        'is_subscribed' => 'boolean',
     ];
 
     public function user()
