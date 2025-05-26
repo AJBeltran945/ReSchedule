@@ -1,31 +1,39 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-6 px-4 sm:py-12 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Responsive grid: 1 column on mobile, 2 on tablet and up -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('frontend.profile.partials.update-profile-information-form')
+                <!-- Update Profile Information -->
+                <div class="p-4 sm:p-6 bg-white dark:bg-gray-800 shadow rounded-lg">
+                    <div class="max-w-xl mx-auto">
+                        @include('frontend.profile.partials.update-profile-information-form')
+                    </div>
                 </div>
-            </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('frontend.profile.partials.update-preferences-form')
+                <!-- Update Preferences -->
+                <div class="p-4 sm:p-6 bg-white dark:bg-gray-800 shadow rounded-lg">
+                    <div class="max-w-xl mx-auto">
+                        @include('frontend.profile.partials.update-preferences-form')
+                    </div>
                 </div>
-            </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('frontend.profile.partials.update-password-form')
+                <!-- Update Password -->
+                <div class="p-4 sm:p-6 bg-white dark:bg-gray-800 shadow rounded-lg">
+                    <div class="max-w-xl mx-auto">
+                        @include('frontend.profile.partials.update-password-form')
+                    </div>
                 </div>
-            </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('frontend.profile.partials.delete-user-form')
+                <!-- Delete User -->
+                <div class="p-4 sm:p-6 bg-white dark:bg-gray-800 shadow rounded-lg">
+                    <div class="max-w-xl mx-auto">
+                        @include('frontend.profile.partials.delete-user-form')
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
