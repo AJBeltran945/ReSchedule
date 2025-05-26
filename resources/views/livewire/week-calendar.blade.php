@@ -37,13 +37,16 @@
             <!-- All Tasks as Tags -->
             <div class="mt-2 text-sm flex-grow flex flex-wrap gap-2 items-start overflow-auto">
                 @foreach($dayData['tasks'] as $task)
-                <span class="
+                <span
+                    class="
                     px-3 py-1 rounded-full font-semibold whitespace-nowrap transition
                     {{ $task->completed
                         ? 'bg-gray-700 text-gray-300 line-through'
                         : 'bg-royal text-midnight'
                     }}
-                ">
+                "
+                    style="background-color: {{ $task->priority->color }}; color: #fff; {{ $task->completed ? 'text-decoration: line-through; opacity: 0.7;' : '' }}"
+                >
                     {{ $task->title }}
                 </span>
                 @endforeach
