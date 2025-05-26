@@ -22,6 +22,7 @@ return new class extends Migration
             $table->time('dinner_time')->nullable();
             $table->time('study_time_start')->nullable();
             $table->time('study_time_end')->nullable();
+            $table->boolean('is_subscribed')->nullable();
 
             $table->timestamps();
         });

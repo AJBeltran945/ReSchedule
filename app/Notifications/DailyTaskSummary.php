@@ -35,7 +35,7 @@ class DailyTaskSummary extends Notification
             $mail->line("- {$task->title} ({$task->start_date?->format('H:i')})");
         }
 
-        return $mail->action('View All Tasks', url('/tasks'));
+        return $mail->action('View All Tasks', url('/en/home/month'));
     }
 
     public function toDatabase($notifiable)

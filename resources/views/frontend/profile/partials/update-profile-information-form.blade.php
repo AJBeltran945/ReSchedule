@@ -17,15 +17,34 @@
         @csrf
         @method('patch')
 
+        {{-- Name --}}
         <div>
             <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+            <x-text-input
+                id="name"
+                name="name"
+                type="text"
+                class="mt-1 block w-full"
+                :value="old('name', $user->name)"
+                required
+                autofocus
+                autocomplete="name"
+            />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
+        {{-- Email --}}
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-text-input
+                id="email"
+                name="email"
+                type="email"
+                class="mt-1 block w-full"
+                :value="old('email', $user->email)"
+                required
+                autocomplete="username"
+            />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
@@ -33,7 +52,10 @@
                     <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
                         {{ __('Your email address is unverified.') }}
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                        <button
+                            form="send-verification"
+                            class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        >
                             {{ __('Click here to re-send the verification email.') }}
                         </button>
                     </p>
@@ -46,6 +68,39 @@
                 </div>
             @endif
         </div>
+
+        {{-- Enable Email Notifications --}}
+
+        {{-- Hidden routine fields so update() always gets them --}}
+        @foreach ([
+            'sleep_time','wake_time',
+            'breakfast_time','lunch_time','dinner_time',
+            'study_time_start','study_time_end',
+        ] as $timeField)
+            <input
+                type="hidden"
+                name="{{ $timeField }}"
+                value="{{ old($timeField, optional($preference)->{$timeField}?->format('H:i')) }}"
+            />
+        @endforeach
+
+        {{-- Enable Email Notifications --}}
+        <div class="flex items-center gap-2">
+            <input
+                id="is_subscribed"
+                name="is_subscribed"
+                type="checkbox"
+                value="1"
+                {{ old('is_subscribed', $preference->is_subscribed ?? false) ? 'checked' : '' }}
+                class="h-5 w-5 text-royal bg-midnight border-gray-600 rounded focus:ring-royal focus:border-royal"
+            />
+            <label for="is_subscribed" class="text-sm text-gray-700 dark:text-gray-300">
+                {{ __('Enable email notifications') }}
+            </label>
+        </div>
+        <x-input-error :messages="$errors->get('is_subscribed')" class="mt-1" />
+
+        <!-- ... save button ... -->
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
