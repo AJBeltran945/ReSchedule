@@ -107,10 +107,11 @@
         @endif
 
         {{-- Submit --}}
-        <form wire:submit.prevent="save">
+        <form wire:submit.prevent="{{ $editingTaskId ? 'update' : 'save' }}">
             <button type="submit"
-                class="mt-4 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
-                Save Task
+                    class="mt-4 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+            >
+                {{ $editingTaskId ? 'Update Task' : 'Save Task' }}
             </button>
         </form>
     </div>
@@ -118,7 +119,9 @@
 
     {{-- Task list --}}
     @forelse($tasks as $task)
-    <div class="p-4 mb-3 rounded-lg shadow-lg flex justify-between items-center text-sm"
+    <div
+        wire:click="edit({{ $task->id }})"
+        class="p-4 mb-3 rounded-lg shadow-lg flex justify-between items-center text-sm"
         style="background-color: {{ $task->priority->color }}">
 
         <!-- Left: Task Title + Type -->
@@ -140,12 +143,27 @@
             @endif
         </div>
 
-        <!-- Right: Delete Button -->
-        <button wire:click="delete({{ $task->id }})"
-            onclick="return confirm('Are you sure you want to delete this task?')"
-            class="ml-2 text-white hover:text-red-500 transition text-lg font-bold leading-none">
-            ✕
-        </button>
+        <!-- Right: Actions -->
+        <div class="flex items-center gap-2">
+            <!-- Complete -->
+            <button
+                wire:click="complete({{ $task->id }})"
+                class="text-white bg-green-600 hover:bg-green-700 px-2 py-1 rounded text-sm"
+                title="Mark as completed"
+            >
+                ✓
+            </button>
+
+            <!-- Delete -->
+            <button
+                wire:click="delete({{ $task->id }})"
+                onclick="return confirm('Are you sure you want to delete this task?')"
+                class="text-white bg-red-600 hover:bg-red-700 px-2 py-1 rounded text-sm"
+                title="Delete task"
+            >
+                ✕
+            </button>
+        </div>
     </div>
     @empty
     <p class="text-sm text-white/60">No tasks found for this day.</p>

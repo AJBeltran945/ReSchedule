@@ -60,6 +60,7 @@ class MonthCalendar extends Component
                 ->where('user_id', $userId)
                 ->where('completed', false)
                 ->with(['type'])
+                ->orderBy('start_date', 'asc')
                 ->get();
 
             $calendar[] = [

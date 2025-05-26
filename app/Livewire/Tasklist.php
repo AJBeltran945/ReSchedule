@@ -14,6 +14,7 @@ class Tasklist extends Component
 {
     public $date;
     public $showForm = false;
+    public $editingTaskId = null;
 
     public $title = '';
     public $description = '';
@@ -35,6 +36,23 @@ class Tasklist extends Component
     public function toggleForm()
     {
         $this->showForm = !$this->showForm;
+        if (! $this->showForm) {
+            $this->reset([
+                'title',
+                'description',
+                'type_task_id',
+                'start_time',
+                'end_time',
+                'addDuration',
+                'manualInterval',
+                'related_task_id',
+                'duration',
+                'preferred_time_block',
+                'priority_id',
+                'editingTaskId',
+                'showForm'
+            ]);
+        }
     }
 
     public function onTypeChange()
@@ -51,6 +69,7 @@ class Tasklist extends Component
     {
         $this->addDuration = filter_var($checked, FILTER_VALIDATE_BOOLEAN);
     }
+
     public function onManualIntervalChange($checked)
     {
         $this->manualInterval = filter_var($checked, FILTER_VALIDATE_BOOLEAN);
@@ -253,15 +272,7 @@ class Tasklist extends Component
 
             $slot += 15;
         }
-
-        // Fallback if no available slot
-        // return [
-        //     '09:00',
-        //     Carbon::createFromTimeString('09:00')->addMinutes($durationMinutes)->format('H:i')
-        // ];
     }
-
-
 
     public function delete($taskId)
     {
@@ -274,17 +285,153 @@ class Tasklist extends Component
         }
     }
 
+    public function update()
+    {
+        $rules = [
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'type_task_id' => 'required|exists:task_types,id',
+        ];
+
+        if ((int)$this->type_task_id === 1 && $this->manualInterval) {
+        $rules['start_time'] = 'nullable|date_format:H:i';
+            $rules['end_time']   = 'nullable|date_format:H:i|after:start_time';
+        }
+        if ((int)$this->type_task_id === 1 && $this->duration) {
+        $rules['duration']   = ['required','regex:/^((\d{1,2}h\s?)?(\d{1,2}min)?)$/'];
+        }
+        if ((int)$this->type_task_id === 2) {
+        $rules['start_time'] = 'nullable|date_format:H:i';
+            $rules['end_time']   = 'nullable|date_format:H:i|after:start_time';
+        }
+        if ((int)$this->type_task_id === 3) {
+        if ($this->manualInterval) {
+            $rules['start_time'] = 'nullable|date_format:H:i';
+                $rules['end_time']   = 'nullable|date_format:H:i|after:start_time';
+            }
+            if ($this->duration) {
+            $rules['duration'] = ['required','regex:/^((\d{1,2}h\s?)?(\d{1,2}min)?)$/'];
+            }
+            $rules['related_task_id'] = 'required|exists:tasks,id';
+        }
+
+        $this->validate($rules);
+
+        // find and authorize
+        $task = Task::where('id', $this->editingTaskId)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $durationMinutes = 30;
+        if ($this->duration) {
+        $durationMinutes = 0;
+            if (preg_match('/(d{1,2})h/', $this->duration, $hours)) {
+            $durationMinutes += ((int)$hours[1]) * 60;
+            }
+            if (preg_match('/(d{1,2})min/', $this->duration, $mins)) {
+            $durationMinutes += (int)$mins[1];
+            }
+        }
+
+        $preference = UserPreference::where('user_id', Auth::id())->first();
+        if (! $this->start_time && ! $this->end_time) {
+        [$start, $end] = $this->getSuggestedTimeSlot($preference, $durationMinutes, $this->preferred_time_block);
+            $this->start_time = $start;
+            $this->end_time   = $end;
+        }
+
+        $startDateTime = $this->start_time ? $this->date.' '.$this->start_time.':00' : null;
+        $endDateTime   = $this->end_time   ? $this->date.' '.$this->end_time.':00'   : null;
+
+        if ($this->type_task_id === '1') {
+            $this->priority_id = 1;
+        } elseif ($this->type_task_id === '2') {
+            $this->priority_id = 2;
+        } elseif ($this->type_task_id === '3') {
+            $this->priority_id = 3;
+        }
+
+        // apply changes
+        $task->update([
+            'title'           => $this->title,
+            'description'     => $this->description,
+            'type_task_id'    => $this->type_task_id,
+            'start_date'      => $this->start_time ? $this->date . ' ' . $this->start_time . ':00' : null,
+            'end_date'        => $this->end_time   ? $this->date . ' ' . $this->end_time . ':00'   : null,
+            'related_task_id' => $this->related_task_id,
+            'priority_id'     => $this->priority_id,
+        ]);
+
+        // reset state (including editing ID)
+        $this->reset([
+            'title',
+            'description',
+            'type_task_id',
+            'start_time',
+            'end_time',
+            'addDuration',
+            'manualInterval',
+            'related_task_id',
+            'duration',
+            'preferred_time_block',
+            'priority_id',
+            'editingTaskId',
+            'showForm'
+        ]);
+    }
+
+    public function edit($taskId)
+    {
+        $task = Task::where('id', $taskId)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        // populate form fields
+        $this->editingTaskId = $task->id;
+        $this->title           = $task->title;
+        $this->description     = $task->description;
+        $this->type_task_id    = $task->type_task_id;
+        $this->related_task_id = $task->related_task_id;
+        $this->priority_id     = $task->priority_id;
+
+        // if times were stored, split them back into the inputs
+        if ($task->start_date) {
+            $this->start_time = Carbon::parse($task->start_date)->format('H:i');
+        }
+        if ($task->end_date) {
+            $this->end_time = Carbon::parse($task->end_date)->format('H:i');
+        }
+
+        $this->showForm = true;
+    }
+
+    public function complete($taskId)
+    {
+        $task = Task::where('id', $taskId)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if (! $task) {
+            return;
+        }
+
+        $task->completed = true;
+        $task->save();
+    }
+
     public function render()
     {
         $tasks = Task::with('type')
             ->where('user_id', Auth::id())
             ->whereDate('start_date', $this->date)
             ->where('completed', false)
+            ->orderBy('start_date', 'asc')
             ->get();
 
         $types = TaskType::all();
         $userTasks = Task::where('user_id', Auth::id())
             ->where('completed', false)
+            ->orderBy('start_date')
             ->get();
 
         return view('livewire.tasklist', compact('tasks', 'types', 'userTasks'));
