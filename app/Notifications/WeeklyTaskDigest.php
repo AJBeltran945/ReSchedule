@@ -34,7 +34,7 @@ class WeeklyTaskDigest extends Notification
             $mail->line("- {$task->title} (due " . optional($task->start_date)->format('D, M d H:i') . ")");
         }
 
-        return $mail->action('See Full Schedule', url('/tasks'));
+        return $mail->action('See Full Schedule', url('/en/home/month'));
     }
 
     public function toDatabase($notifiable)

@@ -13,18 +13,6 @@
         @csrf
         @method('PUT')
 
-        @php
-            $fields = [
-                'sleep_time'        => 'Sleep Time',
-                'wake_time'         => 'Wake Time',
-                'breakfast_time'    => 'Breakfast Time',
-                'lunch_time'        => 'Lunch Time',
-                'dinner_time'       => 'Dinner Time',
-                'study_time_start'  => 'Study Start Time',
-                'study_time_end'    => 'Study End Time',
-            ];
-        @endphp
-
         @foreach($fields as $field => $label)
             <div>
                 <x-input-label for="{{ $field }}" :value="__($label)" />
@@ -39,6 +27,18 @@
                 <x-input-error :messages="$errors->get($field)" class="mt-2" />
             </div>
         @endforeach
+
+        {{-- Carry name & email through this form so update() can see them --}}
+        <input
+            type="hidden"
+            name="name"
+            value="{{ old('name', $user->name) }}"
+        />
+        <input
+            type="hidden"
+            name="email"
+            value="{{ old('email', $user->email) }}"
+        />
 
         <div class="flex items-center gap-4">
             <x-primary-button>
