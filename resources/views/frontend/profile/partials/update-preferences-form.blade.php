@@ -9,12 +9,14 @@
         </p>
     </header>
 
-    <form method="POST" action="{{ route('profile.update') }}" class="space-y-4">
+    <form method="POST"
+          action="{{ route('profile.update') }}"
+          class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full">
         @csrf
         @method('PUT')
 
         @foreach($fields as $field => $label)
-            <div>
+            <div class="flex flex-col">
                 <x-input-label for="{{ $field }}" :value="__($label)" />
                 <x-text-input
                     id="{{ $field }}"
@@ -28,22 +30,16 @@
             </div>
         @endforeach
 
-        {{-- Carry name & email through this form so update() can see them --}}
-        <input
-            type="hidden"
-            name="name"
-            value="{{ old('name', $user->name) }}"
-        />
-        <input
-            type="hidden"
-            name="email"
-            value="{{ old('email', $user->email) }}"
-        />
+        {{-- Hidden name/email fields --}}
+        <input type="hidden" name="name"  value="{{ old('name',  $user->name)  }}" />
+        <input type="hidden" name="email" value="{{ old('email', $user->email) }}" />
 
-        <div class="flex items-center gap-4">
+        {{-- Button spans all 3 columns --}}
+        <div class="col-span-full flex justify-end">
             <x-primary-button>
                 {{ __('Save Preferences') }}
             </x-primary-button>
         </div>
     </form>
+
 </section>

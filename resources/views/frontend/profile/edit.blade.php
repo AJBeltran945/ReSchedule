@@ -13,13 +13,6 @@
                     </div>
                 </div>
 
-                <!-- Update Preferences -->
-                <div class="p-4 sm:p-6 bg-white dark:bg-gray-800 shadow rounded-lg">
-                    <div class="max-w-xl mx-auto">
-                        @include('frontend.profile.partials.update-preferences-form')
-                    </div>
-                </div>
-
                 <!-- Update Password -->
                 <div class="p-4 sm:p-6 bg-white dark:bg-gray-800 shadow rounded-lg">
                     <div class="max-w-xl mx-auto">
@@ -27,9 +20,16 @@
                     </div>
                 </div>
 
+                <!-- Update Preferences -->
+                <div class="p-4 sm:p-6 bg-white dark:bg-gray-800 shadow rounded-lg md:col-span-2">
+                    <div class="w-full">
+                        @include('frontend.profile.partials.update-preferences-form')
+                    </div>
+                </div>
+
                 <!-- Delete User -->
-                <div class="p-4 sm:p-6 bg-white dark:bg-gray-800 shadow rounded-lg">
-                    <div class="max-w-xl mx-auto">
+                <div class="px-4 py-2 md:col-span-2">
+                    <div class="w-full border-b border-gray-200 dark:border-gray-700">
                         @include('frontend.profile.partials.delete-user-form')
                     </div>
                 </div>

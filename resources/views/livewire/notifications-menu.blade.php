@@ -18,34 +18,62 @@
 
     {{-- Dropdown --}}
     @if($open)
-    <div wire:click.away="$set('open', false)" class="absolute right-0 mt-2 w-80 bg-midnight-dark border border-gray-700 shadow-xl z-50 rounded-lg p-4 text-white">
-        <div class="flex justify-between items-center mb-3">
-            <h4 class="font-semibold text-lg text-royal">Notifications</h4>
-            <button wire:click="markAllAsRead" class="text-sm text-royal hover:underline">
-                Mark all as read
-            </button>
-        </div>
+        <div
+            wire:click.away="$set('open', false)"
+            class="
+        absolute
+          mt-2
+          bg-midnight-dark
+          border border-royal
+          shadow-xl
+          z-50
+          rounded-lg
+          p-4
+          text-white
 
-        @forelse($notifications as $notification)
-        <div class="mb-3 border-b border-gray-600 pb-2">
-            <div class="text-sm font-semibold text-white">
-                {{ $notification->data['title'] ?? 'Notification' }}
-            </div>
-            <div class="text-xs text-gray-300">
-                {{ $notification->data['message'] ?? '' }}
-            </div>
-            <div class="text-xs text-gray-400 flex items-center justify-between">
-                <span>{{ $notification->created_at->diffForHumans() }}</span>
-                @if(is_null($notification->read_at))
-                <button wire:click="markAsRead('{{ $notification->id }}')" class="text-royal hover:underline text-xs">
-                    Mark as read
+        /* mobile base: almost full-width & centered */
+        left-1/2
+        transform -translate-x-1/2
+        w-11/12
+        max-w-xs
+
+        /* tablet+ (sm): right-aligned, narrower */
+        sm:left-auto
+        sm:transform-none
+        sm:right-0
+        sm:w-64
+
+        /* desktop (md+): full intended width */
+        md:w-80
+      "
+        >
+            <div class="flex justify-between items-center mb-3">
+                <h4 class="font-semibold text-lg text-royal">Notifications</h4>
+                <button wire:click="markAllAsRead" class="text-sm text-royal hover:underline">
+                    Mark all as read
                 </button>
-                @endif
             </div>
+
+            @forelse($notifications as $notification)
+                <div class="mb-3 border-b border-royal pb-2">
+                    <div class="text-sm font-semibold text-white">
+                        {{ $notification->data['title'] ?? 'Notification' }}
+                    </div>
+                    <div class="text-xs text-gray-300">
+                        {{ $notification->data['message'] ?? '' }}
+                    </div>
+                    <div class="text-xs text-gray-400 flex items-center justify-between">
+                        <span>{{ $notification->created_at->diffForHumans() }}</span>
+                        @if(is_null($notification->read_at))
+                            <button wire:click="markAsRead('{{ $notification->id }}')" class="text-royal hover:underline text-xs">
+                                Mark as read
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <p class="text-sm text-gray-400">No notifications</p>
+            @endforelse
         </div>
-        @empty
-        <p class="text-sm text-gray-400">No notifications</p>
-        @endforelse
-    </div>
     @endif
 </div>
