@@ -25,27 +25,33 @@
 
         {{-- Task Type + Preferred Time --}}
         <div class="flex flex-col sm:flex-row sm:gap-4">
-            <div class="w-full sm:w-1/2">
+            <div class="{{ (int)$type_task_id === 2 ? 'w-full' : 'w-full sm:w-1/2' }}">
                 <label class="block text-sm font-medium">Task Type</label>
-                <select wire:model="type_task_id" wire:change="onTypeChange" class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal">
+                <select wire:model="type_task_id" wire:change="onTypeChange"
+                        class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal">
                     <option value="">-- Select Type --</option>
                     @foreach($types as $type)
-                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                        <option value="{{ $type->id }}">{{ $type->name }}</option>
                     @endforeach
                 </select>
                 @error('type_task_id') <span class="text-red-400 text-xs">{{ $message }}</span> @enderror
             </div>
 
-            <div class="w-full sm:w-1/2">
-                <label class="block text-sm font-medium">Preferred Time of Day</label>
-                <select wire:model="preferred_time_block" class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal">
-                    <option value="">-- Select Time Block --</option>
-                    <option value="morning">Morning</option>
-                    <option value="afternoon">Afternoon</option>
-                    <option value="evening">Evening</option>
-                </select>
-            </div>
+            @if((int)$type_task_id !== 2)
+                <div class="w-full sm:w-1/2">
+                    <label class="block text-sm font-medium">Preferred Time of Day</label>
+                    <select wire:model="preferred_time_block"
+                            class="mt-1 block w-full bg-gray-900 text-white border border-gray-600 rounded p-2 focus:ring-royal focus:border-royal">
+                        <option value="">-- Select Time Block --</option>
+                        <option value="morning">Morning</option>
+                        <option value="afternoon">Afternoon</option>
+                        <option value="evening">Evening</option>
+                    </select>
+                </div>
+            @endif
         </div>
+
+
 
         {{-- Checkboxes --}}
         @if((int) $type_task_id === 1 || (int) $type_task_id === 3)
@@ -130,7 +136,11 @@
                 {{ $task->title }}
             </div>
             <div class="text-xs text-white/90 font-medium tracking-wide">
-                {{ $task->type->name }}
+                @if(isset($task->relatedTask))
+                    <span class="text-white">Connected to: {{ $task->relatedTask->title }}</span>
+                @else
+                    {{ $task->type->name }}
+                @endif
             </div>
         </div>
 
