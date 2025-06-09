@@ -16,7 +16,7 @@ class PrioritiesTableSeeder extends Seeder
             [
                 'name' => 'Normal',
                 'importance' => 'Default priority level.',
-                'color' => '#10B981', // Green
+                'color' => '#06714e', // Green
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
