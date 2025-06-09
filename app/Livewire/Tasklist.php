@@ -431,6 +431,8 @@ class Tasklist extends Component
         $types = TaskType::all();
         $userTasks = Task::where('user_id', Auth::id())
             ->where('completed', false)
+            ->where('type_task_id', 2)
+            ->whereDate('start_date', '>=', $this->date)
             ->orderBy('start_date')
             ->get();
 

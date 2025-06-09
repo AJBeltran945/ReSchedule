@@ -10,7 +10,7 @@
             </div>
 
             <!-- Center: Navigation Links -->
-            <div class="hidden sm:flex justify-center flex-1">
+            <div class="hidden lg:flex justify-center flex-1">
                 <nav class="flex items-center space-x-6 text-sm font-medium">
                     <x-nav-link :href="route('home.month')" :active="request()->routeIs('home.month')" class="hover:text-royal">
                         {{ __('Month View') }}
@@ -22,7 +22,7 @@
             </div>
 
             <!-- Right: Notifications and Dropdown -->
-            <div class="hidden sm:flex items-center space-x-4">
+            <div class="flex items-center space-x-4">
                 <livewire:notifications-menu />
 
                 <x-dropdown align="right" width="48">
@@ -44,26 +44,12 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault(); this.closest('form').submit();" class="hover:text-royal">
+                                             onclick="event.preventDefault(); this.closest('form').submit();" class="hover:text-royal">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
                 </x-dropdown>
-            </div>
-
-            <!-- Mobile: Hamburger -->
-            <div class="sm:hidden flex items-center">
-                <button @click="open = ! open" class="p-2 rounded-md text-white hover:text-royal hover:bg-gray-800 focus:outline-none transition">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
             </div>
 
         </div>
