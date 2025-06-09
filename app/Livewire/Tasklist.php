@@ -405,18 +405,16 @@ class Tasklist extends Component
         $this->showForm = true;
     }
 
-    public function complete($taskId)
+    public function toggleComplete($taskId)
     {
         $task = Task::where('id', $taskId)
             ->where('user_id', Auth::id())
             ->first();
 
-        if (! $task) {
-            return;
+        if ($task) {
+            $task->completed = ! $task->completed;
+            $task->save();
         }
-
-        $task->completed = true;
-        $task->save();
     }
 
     public function render()
@@ -424,7 +422,6 @@ class Tasklist extends Component
         $tasks = Task::with('type')
             ->where('user_id', Auth::id())
             ->whereDate('start_date', $this->date)
-            ->where('completed', false)
             ->orderBy('start_date', 'asc')
             ->get();
 
