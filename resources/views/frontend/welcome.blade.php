@@ -39,22 +39,22 @@
                 </a>
 
                 <!-- Language + Auth -->
-                <div class="w-42 flex items-center gap-4">
-                    <!-- Language Switcher -->
-                    <nav>
-                        <ul class="flex space-x-4">
-                            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                            <li>
-                                <a hreflang="{{ $localeCode }}"
-                                    href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
-                                    class="transform transition-transform duration-300 hover:scale-110 hover:text-royal uppercase">
-                                    {{ $localeCode }}
-                                </a>
-                            </li>
-                            @endforeach
-                        </ul>
-                    </nav>
-                </div>
+{{--                <div class="w-42 flex items-center gap-4">--}}
+{{--                    <!-- Language Switcher -->--}}
+{{--                    <nav>--}}
+{{--                        <ul class="flex space-x-4">--}}
+{{--                            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)--}}
+{{--                            <li>--}}
+{{--                                <a hreflang="{{ $localeCode }}"--}}
+{{--                                    href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"--}}
+{{--                                    class="transform transition-transform duration-300 hover:scale-110 hover:text-royal uppercase">--}}
+{{--                                    {{ $localeCode }}--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            @endforeach--}}
+{{--                        </ul>--}}
+{{--                    </nav>--}}
+{{--                </div>--}}
             </div>
         </div>
     </header>

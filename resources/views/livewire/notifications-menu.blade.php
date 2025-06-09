@@ -21,31 +21,12 @@
         <div
             wire:click.away="$set('open', false)"
             class="
-        absolute
-          mt-2
-          bg-midnight-dark
-          border border-royal
-          shadow-xl
-          z-50
-          rounded-lg
-          p-4
-          text-white
-
-        /* mobile base: almost full-width & centered */
-        left-1/2
-        transform -translate-x-1/2
-        w-11/12
-        max-w-xs
-
-        /* tablet+ (sm): right-aligned, narrower */
-        sm:left-auto
-        sm:transform-none
-        sm:right-0
-        sm:w-64
-
-        /* desktop (md+): full intended width */
-        md:w-80
-      "
+            absolute right-4 top-14 z-50
+            w-[20rem] max-w-[90vw]
+            bg-midnight-dark text-white
+            border border-royal rounded-lg shadow-xl
+            p-4 overflow-y-auto max-h-[80vh]
+        "
         >
             <div class="flex justify-between items-center mb-3">
                 <h4 class="font-semibold text-lg text-royal">Notifications</h4>
@@ -59,7 +40,7 @@
                     <div class="text-sm font-semibold text-white">
                         {{ $notification->data['title'] ?? 'Notification' }}
                     </div>
-                    <div class="text-xs text-gray-300">
+                    <div class="text-xs text-gray-300 whitespace-normal break-words">
                         {{ $notification->data['message'] ?? '' }}
                     </div>
                     <div class="text-xs text-gray-400 flex items-center justify-between">
