@@ -41,13 +41,13 @@
                 </div>
 
                 <!-- Task List -->
-                <div class="mt-2 text-xs sm:text-sm flex-grow flex flex-wrap gap-2 items-start overflow-auto">
+                <div class="mt-2 text-xs sm:text-sm flex flex-wrap gap-2 items-start overflow-auto">
                     @foreach($dayData['tasks'] as $task)
                         <span
                             class="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full font-semibold whitespace-nowrap transition"
                             style="background-color: {{ $task->priority->color }}; color: #fff; {{ $task->completed ? 'text-decoration: line-through; opacity: 0.7;' : '' }}">
-                    {{ $task->title }}
-                </span>
+                            {{ $task->title }}
+                        </span>
                     @endforeach
                 </div>
             </div>

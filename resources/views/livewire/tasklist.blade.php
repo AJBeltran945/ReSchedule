@@ -123,61 +123,82 @@
     </div>
     @endif
 
-    {{-- Task list --}}
     @forelse($tasks as $task)
-    <div
-        wire:click="edit({{ $task->id }})"
-        class="p-4 mb-3 rounded-lg shadow-lg flex justify-between items-center text-sm"
-        style="background-color: {{ $task->priority->color }}">
+        <div
+            class="p-4 mb-3 rounded-lg shadow-lg flex justify-between items-center text-sm"
+            style="background-color: {{ $task->completed ? '#6b7280' : $task->priority->color }}">
 
-        <!-- Left: Task Title + Type -->
-        <div class="flex-1">
-            <div class="text-base font-extrabold text-white leading-tight">
-                {{ $task->title }}
+            <!-- Left: Task Title + Type -->
+            <div class="flex-1">
+                <div class="text-base font-extrabold text-white leading-tight {{ $task->completed ? 'opacity-70 line-through' : '' }}">
+                    {{ $task->title }}
+                </div>
+
+                @unless($task->completed)
+                    <div class="text-xs text-white/90 font-medium tracking-wide">
+                        @if(isset($task->relatedTask))
+                            <span class="text-white">Connected to: {{ $task->relatedTask->title }}</span>
+                        @else
+                            {{ $task->type->name }}
+                        @endif
+                    </div>
+                @endunless
             </div>
-            <div class="text-xs text-white/90 font-medium tracking-wide">
-                @if(isset($task->relatedTask))
-                    <span class="text-white">Connected to: {{ $task->relatedTask->title }}</span>
+
+            <!-- Center: Time Block -->
+            @unless($task->completed)
+                <div class="text-xs text-white/80 text-right mx-4 min-w-[80px]">
+                    @if($task->start_date && $task->end_date)
+                        {{ \Carbon\Carbon::parse($task->start_date)->format('H:i') }}
+                        →
+                        {{ \Carbon\Carbon::parse($task->end_date)->format('H:i') }}
+                    @endif
+                </div>
+            @endunless
+
+            <!-- Right: Actions -->
+            <div class="flex items-center gap-2">
+                @if($task->completed)
+                    <!-- Un-complete -->
+                    <button
+                        wire:click.stop="toggleComplete({{ $task->id }})"
+                        title="Mark as not completed"
+                        class="text-white hover:text-yellow-400"
+                    >
+                        <x-heroicon-o-arrow-uturn-left class="w-5 h-5" />
+                    </button>
                 @else
-                    {{ $task->type->name }}
+                    <!-- Complete -->
+                    <button
+                        wire:click.stop="toggleComplete({{ $task->id }})"
+                        title="Mark as completed"
+                        class="text-white hover:text-green-400"
+                    >
+                        <x-heroicon-o-check class="w-5 h-5" />
+                    </button>
+
+                    <!-- Edit -->
+                    <button
+                        wire:click.stop="edit({{ $task->id }})"
+                        title="Edit task"
+                        class="text-white hover:text-blue-400"
+                    >
+                        <x-heroicon-o-pencil class="w-5 h-5" />
+                    </button>
                 @endif
+
+                <!-- Delete (always available) -->
+                <button
+                    wire:click.stop="delete({{ $task->id }})"
+                    onclick="return confirm('Are you sure you want to delete this task?')"
+                    title="Delete task"
+                    class="text-white hover:text-red-500"
+                >
+                    <x-heroicon-o-trash class="w-5 h-5" />
+                </button>
             </div>
         </div>
-
-        <!-- Center: Time Block -->
-        <div class="text-xs text-white/80 text-right mx-4 min-w-[80px]">
-            @if($task->start_date && $task->end_date)
-            {{ \Carbon\Carbon::parse($task->start_date)->format('H:i') }}
-            →
-            {{ \Carbon\Carbon::parse($task->end_date)->format('H:i') }}
-            @endif
-        </div>
-
-        <!-- Right: Actions -->
-        <div class="flex items-center gap-2">
-            <!-- Complete -->
-            <button
-                wire:click="complete({{ $task->id }})"
-                class="text-white bg-green-600 hover:bg-green-700 px-2 py-1 rounded text-sm"
-                title="Mark as completed"
-            >
-                ✓
-            </button>
-
-            <!-- Delete -->
-            <button
-                wire:click="delete({{ $task->id }})"
-                onclick="return confirm('Are you sure you want to delete this task?')"
-                class="text-white bg-red-600 hover:bg-red-700 px-2 py-1 rounded text-sm"
-                title="Delete task"
-            >
-                ✕
-            </button>
-        </div>
-    </div>
     @empty
-    <p class="text-sm text-white/60">No tasks found for this day.</p>
+        <p class="text-gray-400 text-sm">No tasks for this day.</p>
     @endforelse
-
-
 </div>
